@@ -45,5 +45,3 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-# Own ignore
-Screenshot_1635024606.png
