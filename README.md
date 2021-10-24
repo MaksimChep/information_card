@@ -4,4 +4,4 @@ A new Flutter project.
 
 ## How it looks
 
-![alt text](assets/images/img_qrcode.png "Screenshot of main application screen")
+![alt text](Screenshot_1635024606.png "Screenshot of main application screen")
