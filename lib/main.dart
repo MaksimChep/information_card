@@ -1,5 +1,5 @@
 import 'dart:math';
-
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -20,16 +20,7 @@ class MyApp extends StatelessWidget {
             children: [
               const BackgroundStack(),
               const Spacer(),
-              Container(
-                  width: 219,
-                  height: 219,
-                  decoration: const BoxDecoration(
-                      color: Color(0xff8bcff4),
-                      borderRadius: BorderRadius.all(Radius.circular(25))),
-                  child: const Image(
-                    image: AssetImage('assets/images/img_qrcode.png'),
-                    alignment: Alignment.center,
-                  )),
+              FlipperWidget(),
               const Spacer(flex: 4),
               Container(
                   height: 48,
@@ -118,5 +109,93 @@ class BackgroundStack extends StatelessWidget {
             child: Image(image: AssetImage('assets/images/bg_top_line.png'))),
       ],
     );
+  }
+}
+
+class FlipperWidget extends StatefulWidget {
+  @override
+  _FlipperWidgetState createState() => _FlipperWidgetState();
+}
+
+class _FlipperWidgetState extends State<FlipperWidget>
+    with SingleTickerProviderStateMixin {
+  bool reversed = false;
+  late Animation<double> _animation;
+  late AnimationController _animationController;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController =
+        AnimationController(vsync: this, duration: Duration(seconds: 1));
+
+    _animation = TweenSequence([
+      TweenSequenceItem(tween: Tween(begin: 0.0, end: -pi / 2), weight: 0.5),
+      TweenSequenceItem(tween: Tween(begin: pi / 2, end: 0.0), weight: 0.5)
+    ]).animate(_animationController);
+  }
+
+  _doAnim() {
+    if (!mounted) return;
+    if (reversed) {
+      _animationController.reverse();
+      reversed = false;
+    } else {
+      _animationController.forward();
+      reversed = true;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _animation,
+      builder: (context, child) => Transform(
+        alignment: Alignment.center,
+        transform: Matrix4.identity()
+          ..setEntry(3, 2, 0.001)
+          ..rotateY(_animation.value),
+        child: GestureDetector(
+          onTap: _doAnim,
+          child: IndexedStack(
+            children: <Widget>[CardOne(), CardTwo()],
+            alignment: Alignment.center,
+            index: _animationController.value < 0.5 ? 0 : 1,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class CardOne extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 219,
+      height: 219,
+      decoration: const BoxDecoration(
+          color: Color(0xff8bcff4),
+          borderRadius: BorderRadius.all(Radius.circular(25))),
+    );
+  }
+}
+
+class CardTwo extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        width: 219,
+        height: 219,
+        decoration: const BoxDecoration(
+            color: Color(0xff8bcff4),
+            borderRadius: BorderRadius.all(Radius.circular(25))),
+        child: Center(
+            child: QrImage(
+          data: "https://www.linkedin.com/in/максим-чепурных-84476b205/",
+          version: QrVersions.auto,
+          size: 190.0,
+          backgroundColor: Colors.white,
+        )));
   }
 }
