@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
             children: [
               const BackgroundStack(),
               const Spacer(),
-              FlipperWidget(),
+              const FlipperWidget(),
               const Spacer(flex: 4),
               Container(
                   height: 48,
@@ -30,12 +30,12 @@ class MyApp extends StatelessWidget {
                       border:
                           Border.all(width: 2, color: const Color(0xff13c67b))),
                   child: Row(
-                    children: [
-                      const Expanded(
+                    children: const [
+                      Expanded(
                           child: Image(
                               image: AssetImage('assets/images/ic_phone.png')),
                           flex: 1),
-                      const Expanded(
+                      Expanded(
                           child: Text('+38 066 541 13 62',
                               style: TextStyle(
                                   color: Color(0xff139d64),
@@ -53,12 +53,12 @@ class MyApp extends StatelessWidget {
                       border:
                           Border.all(width: 2, color: const Color(0xffe0083c))),
                   child: Row(
-                    children: [
-                      const Expanded(
+                    children: const [
+                      Expanded(
                           child: Image(
                               image: AssetImage('assets/images/ic_email.png')),
                           flex: 1),
-                      const Expanded(
+                      Expanded(
                           child: Text('chepurnyh05@gmail.com',
                               style: TextStyle(
                                   color: Color(0xffc90938),
@@ -83,7 +83,7 @@ class BackgroundStack extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Container(
+        SizedBox(
             width: MediaQuery.of(context).size.width,
             child: const Image(
               image: AssetImage('assets/images/bg_top_rectangle.png'),
@@ -113,6 +113,8 @@ class BackgroundStack extends StatelessWidget {
 }
 
 class FlipperWidget extends StatefulWidget {
+  const FlipperWidget({Key? key}) : super(key: key);
+
   @override
   _FlipperWidgetState createState() => _FlipperWidgetState();
 }
@@ -127,7 +129,7 @@ class _FlipperWidgetState extends State<FlipperWidget>
   void initState() {
     super.initState();
     _animationController =
-        AnimationController(vsync: this, duration: Duration(seconds: 1));
+        AnimationController(vsync: this, duration: const Duration(seconds: 1));
 
     _animation = TweenSequence([
       TweenSequenceItem(tween: Tween(begin: 0.0, end: -pi / 2), weight: 0.5),
@@ -158,7 +160,7 @@ class _FlipperWidgetState extends State<FlipperWidget>
         child: GestureDetector(
           onTap: _doAnim,
           child: IndexedStack(
-            children: <Widget>[CardOne(), CardTwo()],
+            children: const [CardOne(), CardTwo()],
             alignment: Alignment.center,
             index: _animationController.value < 0.5 ? 0 : 1,
           ),
@@ -169,6 +171,8 @@ class _FlipperWidgetState extends State<FlipperWidget>
 }
 
 class CardOne extends StatelessWidget {
+  const CardOne({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -177,11 +181,23 @@ class CardOne extends StatelessWidget {
       decoration: const BoxDecoration(
           color: Color(0xff8bcff4),
           borderRadius: BorderRadius.all(Radius.circular(25))),
+      child: Center(
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(25),
+          child: Image.asset(
+            'assets/images/profile_image.jpg',
+            height: 190,
+            width: 190,
+          ),
+        ),
+      ),
     );
   }
 }
 
 class CardTwo extends StatelessWidget {
+  const CardTwo({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -192,7 +208,7 @@ class CardTwo extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(25))),
         child: Center(
             child: QrImage(
-          data: "https://www.linkedin.com/in/максим-чепурных-84476b205/",
+          data: "https://www.linkedin.com/in/maksimchep/",
           version: QrVersions.auto,
           size: 190.0,
           backgroundColor: Colors.white,
